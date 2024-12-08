@@ -1,6 +1,7 @@
 import Navbar from "@/components/Navbar";
 import Hero from "@/components/Hero";
 import Services from "@/components/Services";
+import BentoGrid from "@/components/BentoGrid";
 
 const Index = () => {
   return (
@@ -8,6 +9,7 @@ const Index = () => {
       <Navbar />
       <Hero />
       <Services />
+      <BentoGrid />
     </div>
   );
 };
