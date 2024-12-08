@@ -27,7 +27,7 @@ const Projects = () => {
     <section className="py-20 bg-dark">
       <div className="container mx-auto px-4">
         <h2 className="text-4xl font-bold text-white mb-12">Featured Projects</h2>
-        <div className="space-y-8">
+        <div className="space-y-8 max-w-3xl mx-auto">
           {projects.map((project, index) => (
             <motion.div
               key={index}
@@ -35,14 +35,15 @@ const Projects = () => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: index * 0.2 }}
+              className="hover:scale-105 transition-transform duration-300"
             >
               <Card className="bg-dark-card border-none overflow-hidden">
-                <div className="grid md:grid-cols-2 gap-6">
-                  <div className="relative h-64 md:h-auto">
+                <div className="flex flex-col">
+                  <div className="relative h-64">
                     <img
                       src={project.image}
                       alt={project.title}
-                      className="absolute inset-0 w-full h-full object-cover rounded-l-lg"
+                      className="w-full h-full object-cover"
                     />
                   </div>
                   <div className="p-6">

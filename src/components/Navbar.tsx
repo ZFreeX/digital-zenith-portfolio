@@ -12,8 +12,11 @@ const Navbar = () => {
           <Link to="/" className="text-white hover:text-primary transition-colors">Work</Link>
           <Link to="/about" className="text-white hover:text-primary transition-colors">About</Link>
           <Link to="/contact" className="text-white hover:text-primary transition-colors">Contact</Link>
-          <Button variant="outline" className="border-primary text-primary hover:bg-primary hover:text-white">
-            Resume
+          <Link to="/resume" className="text-white hover:text-primary transition-colors">Resume</Link>
+          <Button 
+            className="bg-gradient-to-r from-primary to-secondary hover:opacity-90 transition-opacity"
+          >
+            Get in touch
           </Button>
         </div>
       </div>
