@@ -2,7 +2,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { motion } from "framer-motion";
 import { useState } from "react";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import { ChevronLeft, ChevronRight, Twitter, Send } from "lucide-react";
 
 const BentoGrid = () => {
   const [currentImage, setCurrentImage] = useState(0);
@@ -25,6 +25,7 @@ const BentoGrid = () => {
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
+            whileHover={{ scale: 1.02 }}
             className="bg-dark-card p-6 rounded-2xl border border-gradient-to-r from-primary to-secondary hover:shadow-lg hover:shadow-primary/20 transition-all duration-300"
           >
             <h3 className="text-xl font-semibold mb-4 text-white">Tech Stack</h3>
@@ -45,10 +46,16 @@ const BentoGrid = () => {
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
+            whileHover={{ scale: 1.02 }}
             className="bg-gradient-to-br from-primary/20 to-secondary/20 p-6 rounded-2xl hover:shadow-lg hover:shadow-secondary/20 transition-all duration-300"
           >
-            <h3 className="text-xl font-semibold mb-4 text-white">Twitter</h3>
-            <Button variant="secondary" className="w-full text-white hover:bg-white/10">Follow me on Twitter</Button>
+            <div className="flex items-center justify-between mb-4">
+              <h3 className="text-xl font-semibold text-white">Twitter</h3>
+              <Twitter className="w-6 h-6 text-primary" />
+            </div>
+            <Button variant="secondary" className="w-full bg-white/10 text-white hover:bg-white/20">
+              Follow me on Twitter
+            </Button>
           </motion.div>
 
           {/* Telegram */}
@@ -56,10 +63,16 @@ const BentoGrid = () => {
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
+            whileHover={{ scale: 1.02 }}
             className="bg-dark-card p-6 rounded-2xl border-2 border-secondary/30 hover:shadow-lg hover:shadow-secondary/20 transition-all duration-300"
           >
-            <h3 className="text-xl font-semibold mb-4 text-white">Telegram</h3>
-            <Button variant="secondary" className="w-full text-white hover:bg-white/10">Message on Telegram</Button>
+            <div className="flex items-center justify-between mb-4">
+              <h3 className="text-xl font-semibold text-white">Telegram</h3>
+              <Send className="w-6 h-6 text-secondary" />
+            </div>
+            <Button variant="secondary" className="w-full bg-white/10 text-white hover:bg-white/20">
+              Message on Telegram
+            </Button>
           </motion.div>
 
           {/* Gallery */}
@@ -67,6 +80,7 @@ const BentoGrid = () => {
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
+            whileHover={{ scale: 1.02 }}
             className="bg-dark-card rounded-2xl overflow-hidden relative group hover:shadow-lg transition-all duration-300"
           >
             <div className="relative h-64">
@@ -95,6 +109,7 @@ const BentoGrid = () => {
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
+            whileHover={{ scale: 1.02 }}
             className="bg-gradient-to-br from-dark-card to-secondary/5 p-6 rounded-2xl hover:shadow-lg hover:shadow-primary/20 transition-all duration-300"
           >
             <h3 className="text-xl font-semibold mb-4 text-white">Stay Updated</h3>
@@ -104,14 +119,33 @@ const BentoGrid = () => {
             </div>
           </motion.div>
 
+          {/* Personal Info */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            whileHover={{ scale: 1.02 }}
+            className="bg-gradient-to-br from-primary/10 to-secondary/10 p-6 rounded-2xl hover:shadow-lg hover:shadow-primary/20 transition-all duration-300"
+          >
+            <h3 className="text-xl font-semibold mb-4 text-white">Konstantin Filipovich</h3>
+            <p className="text-white/60 mb-4">
+              Software engineer passionate about AI integration and automation solutions. Specialized in building efficient, scalable applications and systems.
+            </p>
+            <div className="flex flex-wrap gap-2">
+              <span className="px-3 py-1 bg-primary/10 text-primary rounded-full text-sm">AI Expert</span>
+              <span className="px-3 py-1 bg-secondary/10 text-secondary rounded-full text-sm">Full Stack</span>
+            </div>
+          </motion.div>
+
           {/* Approach */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
+            whileHover={{ scale: 1.02 }}
             className="bg-dark-card p-6 rounded-2xl md:col-span-2 relative overflow-hidden hover:shadow-lg hover:shadow-primary/20 transition-all duration-300"
           >
-            <div className="absolute inset-0">
+            <div className="absolute inset-0 opacity-50">
               <div className="absolute top-1/2 left-1/4 w-64 h-64 rounded-full bg-gradient-to-r from-primary/30 to-transparent mix-blend-screen" />
               <div className="absolute top-1/2 left-1/2 -translate-x-1/2 w-64 h-64 rounded-full bg-gradient-to-l from-secondary/30 to-transparent mix-blend-screen" />
             </div>

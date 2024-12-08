@@ -1,90 +1,88 @@
-import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
-import Typewriter from "typewriter-effect";
 
 const Hero = () => {
   return (
     <section className="min-h-screen flex items-center justify-center bg-dark relative overflow-hidden">
       {/* Neural Network Background Effect */}
-      <div className="absolute inset-0 bg-[linear-gradient(40deg,#0f0f13,#1a1f2c)]">
-        <div className="absolute inset-0 opacity-30">
-          {Array.from({ length: 50 }).map((_, i) => (
-            <motion.div
-              key={i}
-              className="absolute rounded-full"
-              initial={{ scale: 0.5, opacity: 0.5 }}
-              animate={{
-                scale: [0.5, 1, 0.5],
-                opacity: [0.5, 1, 0.5],
-                x: Math.random() * 20 - 10,
-                y: Math.random() * 20 - 10,
-              }}
-              transition={{
-                duration: 2 + Math.random() * 2,
-                repeat: Infinity,
-                ease: "easeInOut",
-              }}
-              style={{
-                top: `${Math.random() * 100}%`,
-                left: `${Math.random() * 100}%`,
-                width: `${Math.random() * 3}px`,
-                height: `${Math.random() * 3}px`,
-                background: Math.random() > 0.5 ? "#FF719A" : "#9b87f5",
-              }}
-            />
-          ))}
-        </div>
+      <div className="absolute inset-0">
+        {Array.from({ length: 100 }).map((_, i) => (
+          <motion.div
+            key={i}
+            className="absolute bg-gradient-to-r from-primary/20 to-secondary/20"
+            style={{
+              width: Math.random() * 200 + 100,
+              height: '1px',
+              top: `${Math.random() * 100}%`,
+              left: `${Math.random() * 100}%`,
+              transform: `rotate(${Math.random() * 360}deg)`,
+            }}
+            animate={{
+              opacity: [0.2, 0.5, 0.2],
+              scale: [1, 1.1, 1],
+            }}
+            transition={{
+              duration: 3 + Math.random() * 2,
+              repeat: Infinity,
+              ease: "linear",
+            }}
+          />
+        ))}
+        {Array.from({ length: 50 }).map((_, i) => (
+          <motion.div
+            key={`dot-${i}`}
+            className="absolute rounded-full"
+            style={{
+              width: 3,
+              height: 3,
+              top: `${Math.random() * 100}%`,
+              left: `${Math.random() * 100}%`,
+              background: Math.random() > 0.5 ? '#FF719A' : '#9b87f5',
+            }}
+            animate={{
+              opacity: [0.2, 0.8, 0.2],
+              scale: [1, 1.2, 1],
+            }}
+            transition={{
+              duration: 2 + Math.random() * 2,
+              repeat: Infinity,
+              ease: "linear",
+            }}
+          />
+        ))}
       </div>
 
       <div className="container mx-auto px-4 text-center relative z-10">
-        <motion.div
+        <motion.h1
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
-          className="text-5xl md:text-7xl font-bold mb-6 flex flex-col items-center justify-center gap-2"
+          transition={{ duration: 0.8 }}
+          className="text-6xl md:text-8xl font-bold mb-8 bg-gradient-to-r from-[#FF719A] to-[#FF719A] bg-clip-text text-transparent"
+          style={{ fontFamily: 'ClashDisplay-Bold' }}
         >
-          <div className="text-white font-[ClashDisplay-Bold]">
-            <Typewriter
-              options={{
-                strings: ["Introducing AI to business"],
-                autoStart: true,
-                loop: false,
-                cursor: "",
-              }}
-            />
-          </div>
-        </motion.div>
+          Creating experiences
+          <br />
+          beyond boundaries
+        </motion.h1>
 
-        <motion.h2 
+        <motion.h2
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.2 }}
-          className="text-2xl md:text-3xl text-white/80 mb-8 font-[ClashDisplay-Medium]"
-        >
-          Konstantin Filipovich
-        </motion.h2>
-        
-        <motion.p 
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.4 }}
-          className="text-xl text-white/60 mb-12"
+          transition={{ duration: 0.8, delay: 0.2 }}
+          className="text-2xl md:text-3xl text-white/80 mb-4"
+          style={{ fontFamily: 'ClashDisplay-Medium' }}
         >
           Software Engineer
-        </motion.p>
+        </motion.h2>
 
-        <motion.div
+        <motion.h3
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.6 }}
+          transition={{ duration: 0.8, delay: 0.4 }}
+          className="text-xl text-[#FF719A] mb-12"
+          style={{ fontFamily: 'ClashDisplay-Regular' }}
         >
-          <Button 
-            size="lg" 
-            className="bg-gradient-to-r from-primary via-secondary to-primary bg-[length:200%] hover:bg-[center-right] transition-all duration-500 text-white font-medium px-8 py-6 rounded-xl shadow-lg hover:shadow-xl hover:scale-105 hover:shadow-primary/20"
-          >
-            View My Work
-          </Button>
-        </motion.div>
+          Konstantin Filipovich
+        </motion.h3>
       </div>
     </section>
   );
