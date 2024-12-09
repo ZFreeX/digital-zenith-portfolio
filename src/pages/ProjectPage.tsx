@@ -147,27 +147,28 @@ const ProjectPage = () => {
                   ))}
                 </div>
               </div>
-            </motion.div>
 
-          <div className="flex justify-between items-center mt-16">
-            {project.prev && (
-              <Button
-                onClick={() => handleNavigate(project.prev)}
-                className="bg-dark-card hover:bg-primary/20 text-white gap-2"
-              >
-                <ChevronLeft className="w-4 h-4" />
-                Previous Project
-              </Button>
-            )}
-            {project.next && (
-              <Button
-                onClick={() => handleNavigate(project.next)}
-                className="bg-dark-card hover:bg-primary/20 text-white gap-2 ml-auto"
-              >
-                Next Project
-                <ChevronRight className="w-4 h-4" />
-              </Button>
-            )}
+              <div className="flex justify-between items-center mt-16">
+                {project.prev && (
+                  <Button
+                    onClick={() => handleNavigate(project.prev)}
+                    className="bg-dark-card hover:bg-primary/20 text-white gap-2"
+                  >
+                    <ChevronLeft className="w-4 h-4" />
+                    Previous Project
+                  </Button>
+                )}
+                {project.next && (
+                  <Button
+                    onClick={() => handleNavigate(project.next)}
+                    className="bg-dark-card hover:bg-primary/20 text-white gap-2 ml-auto"
+                  >
+                    Next Project
+                    <ChevronRight className="w-4 h-4" />
+                  </Button>
+                )}
+              </div>
+            </motion.div>
           </div>
         </motion.div>
       </div>
