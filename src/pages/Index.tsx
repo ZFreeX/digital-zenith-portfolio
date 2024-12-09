@@ -13,13 +13,20 @@ const Index = () => {
   useEffect(() => {
     const section = searchParams.get('section');
     if (section) {
-      const element = document.getElementById(section);
-      if (element) {
-        // Add a small delay to ensure the page is fully loaded
-        setTimeout(() => {
-          element.scrollIntoView({ behavior: 'smooth' });
-        }, 100);
-      }
+      // Wait for the page to fully render
+      setTimeout(() => {
+        const element = document.getElementById(section);
+        if (element) {
+          const navbarHeight = 80; // Approximate height of the navbar
+          const elementPosition = element.getBoundingClientRect().top;
+          const offsetPosition = elementPosition + window.pageYOffset - navbarHeight;
+
+          window.scrollTo({
+            top: offsetPosition,
+            behavior: "smooth"
+          });
+        }
+      }, 100);
     }
   }, [searchParams]);
 
