@@ -99,3 +99,23 @@
     @apply bg-background text-foreground;
   }
 }
+
+@keyframes blink {
+  0%, 100% { opacity: 0; }
+  50% { opacity: 1; }
+}
+
+.animate-blink {
+  animation: blink 1s step-end infinite;
+}
+
+.gradient-text-animated {
+  background-size: 200% auto;
+  animation: shine 8s linear infinite;
+}
+
+@keyframes shine {
+  to {
+    background-position: 200% center;
+  }
+}

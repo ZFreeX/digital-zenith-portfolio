@@ -113,10 +113,13 @@ const BentoGrid = () => {
             className="bg-gradient-to-br from-dark-card to-secondary/5 p-6 rounded-2xl hover:shadow-lg hover:shadow-primary/20 transition-all duration-300"
           >
             <h3 className="text-xl font-semibold mb-4 text-white">Stay Updated</h3>
-            <div className="flex gap-2">
+            <div className="flex gap-2 mb-4">
               <Input placeholder="Enter your email" className="flex-1 bg-white/5" />
               <Button className="bg-primary hover:bg-primary/90">Subscribe</Button>
             </div>
+            <p className="text-white/60 text-sm">
+              Subscribe to my newsletter to receive updates about new projects, tech insights, and exclusive content. No spam, unsubscribe anytime.
+            </p>
           </motion.div>
 
           {/* Personal Info */}

@@ -8,64 +8,71 @@ const projects = [
     description: "A sophisticated Telegram bot leveraging OpenAI's GPT-4 for natural language processing and automated responses.",
     image: "/placeholder.svg",
     tags: ["Python", "OpenAI API", "Telegram API"],
-    link: "#"
+    link: "/project/telegram-bot"
   },
   {
     title: "Web3 Portfolio Tracker",
     description: "Real-time cryptocurrency portfolio tracking application with advanced analytics and market insights.",
     image: "/placeholder.svg",
     tags: ["Next.js", "TypeScript", "Web3.js"],
-    link: "#"
+    link: "/project/web3-tracker"
   },
   {
     title: "Automated Pinterest Manager",
     description: "Pinterest marketing automation tool for scheduling, analytics, and content optimization.",
     image: "/placeholder.svg",
     tags: ["Python", "Selenium", "PostgreSQL"],
-    link: "#"
+    link: "/project/pinterest-manager"
   }
 ];
 
 const Projects = () => {
   return (
-    <section className="py-20 bg-dark">
+    <section className="py-20 bg-dark" id="work">
       <div className="container mx-auto px-4">
-        <h2 className="text-4xl font-bold text-white mb-12 text-center">Featured Projects</h2>
-        <div className="space-y-8 max-w-3xl mx-auto">
+        <h2 className="text-4xl font-bold text-white mb-16 text-center">Featured Projects</h2>
+        <div className="grid grid-cols-1 gap-24 max-w-4xl mx-auto">
           {projects.map((project, index) => (
             <Link to={project.link} key={index}>
               <motion.div
-                initial={{ opacity: 0, y: 20 }}
+                initial={{ opacity: 0, y: 50 }}
                 whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: index * 0.2 }}
-                whileHover={{ scale: 1.02 }}
-                className="transition-all duration-300"
+                viewport={{ once: true, margin: "-100px" }}
+                transition={{ 
+                  duration: 0.8,
+                  delay: index * 0.2,
+                  ease: [0.21, 0.47, 0.32, 0.98]
+                }}
+                whileHover={{ 
+                  scale: 1.03,
+                  transition: { duration: 0.3 }
+                }}
+                className="transition-all duration-500"
               >
-                <Card className="bg-dark-card border-none overflow-hidden hover:shadow-lg hover:shadow-primary/20">
+                <Card className="bg-dark-card border-none overflow-hidden hover:shadow-xl hover:shadow-primary/20 transform transition-all duration-500 hover:translate-y-[-8px]">
                   <div className="flex flex-col">
-                    <div className="relative h-64">
+                    <div className="relative h-72">
                       <img
                         src={project.image}
                         alt={project.title}
                         className="w-full h-full object-cover"
                       />
                     </div>
-                    <div className="p-6">
+                    <div className="p-8">
                       <CardHeader className="p-0">
-                        <CardTitle className="text-2xl font-bold text-white mb-2 group-hover:text-primary transition-colors">
+                        <CardTitle className="text-2xl font-bold text-white mb-4 group-hover:text-primary transition-colors">
                           {project.title}
                         </CardTitle>
-                        <CardDescription className="text-white/60">
+                        <CardDescription className="text-white/60 text-lg">
                           {project.description}
                         </CardDescription>
                       </CardHeader>
-                      <CardContent className="p-0 mt-4">
-                        <div className="flex flex-wrap gap-2">
+                      <CardContent className="p-0 mt-6">
+                        <div className="flex flex-wrap gap-3">
                           {project.tags.map((tag, tagIndex) => (
                             <span
                               key={tagIndex}
-                              className="px-3 py-1 bg-primary/10 text-primary rounded-full text-sm"
+                              className="px-4 py-1.5 bg-primary/10 text-primary rounded-full text-sm font-medium"
                             >
                               {tag}
                             </span>

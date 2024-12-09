@@ -3,6 +3,7 @@ import Hero from "@/components/Hero";
 import Services from "@/components/Services";
 import BentoGrid from "@/components/BentoGrid";
 import Projects from "@/components/Projects";
+import Terminal from "@/components/Terminal";
 
 const Index = () => {
   return (
@@ -12,6 +13,7 @@ const Index = () => {
       <Services />
       <BentoGrid />
       <Projects />
+      <Terminal />
     </div>
   );
 };

@@ -1,16 +1,13 @@
-'use client'
-
-import { TypeAnimation } from 'react-type-animation'
-import { motion } from 'framer-motion'
-import { HeroBackground } from './hero-background'
-import { FloatingElement } from './floating-element'
+import { TypeAnimation } from 'react-type-animation';
+import { motion } from 'framer-motion';
+import { HeroBackground } from './hero-background';
+import { FloatingElement } from './floating-element';
 
 export default function Hero() {
   return (
     <section className="relative min-h-[80vh] flex items-center justify-center overflow-hidden">
       <HeroBackground />
       
-      {/* Floating elements */}
       <div className="absolute inset-0 overflow-hidden">
         <FloatingElement />
         <motion.div
@@ -31,7 +28,6 @@ export default function Hero() {
         />
       </div>
 
-      {/* Content */}
       <div className="container px-4 py-24 md:py-32 relative z-10">
         <motion.div 
           initial={{ opacity: 0, y: 20 }}
@@ -52,7 +48,7 @@ export default function Hero() {
               wrapper="span"
               speed={50}
               repeat={Infinity}
-              className="block mb-4 gradient-text-animated bg-gradient-to-r from-[#FF719A] to-[#9b87f5] text-transparent bg-clip-text"
+              className="block mb-4 gradient-text-animated bg-gradient-to-r from-[#FF719A] to-[#9b87f5] text-transparent bg-clip-text after:content-['|'] after:ml-1 after:animate-blink after:text-primary"
             />
             <span className="gradient-text-animated block bg-gradient-to-r from-[#FF719A] to-[#9b87f5] text-transparent bg-clip-text">beyond boundaries</span>
           </h1>
@@ -68,7 +64,6 @@ export default function Hero() {
           >
             <div className="absolute inset-0 bg-gradient-to-r from-[#FF1B6B] via-[#9D4EDD] to-[#FF4D4D] opacity-20 blur-2xl rounded-full" />
             <h2 className="mt-8 text-xl font-medium md:text-2xl relative z-10 bg-clip-text text-transparent bg-gradient-to-r from-white to-white/80">
-              
               Konstantin Filipovich
             </h2>
           </motion.div>
@@ -83,10 +78,8 @@ export default function Hero() {
         </motion.div>
       </div>
 
-      {/* Gradient overlays */}
       <div className="absolute inset-0 bg-gradient-to-b from-transparent via-dark/50 to-dark" />
-<div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_rgba(255,113,154,0.15),transparent_50%)]" />
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_rgba(255,113,154,0.15),transparent_50%)]" />
     </section>
-  )
+  );
 }
-
