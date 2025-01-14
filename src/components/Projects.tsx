@@ -31,7 +31,7 @@ const Projects = () => {
     <section className="py-20 bg-dark" id="work">
       <div className="container mx-auto px-4">
         <h2 className="text-4xl font-bold text-white mb-16 text-center">Featured Projects</h2>
-        <div className="grid grid-cols-1 gap-24 max-w-4xl mx-auto">
+        <div className="grid grid-cols-1 gap-24 max-w-3xl mx-auto">
           {projects.map((project, index) => (
             <Link to={project.link} key={index}>
               <motion.div
@@ -51,7 +51,7 @@ const Projects = () => {
               >
                 <Card className="bg-dark-card border-none overflow-hidden hover:shadow-xl hover:shadow-primary/20 transform transition-all duration-500 hover:translate-y-[-8px]">
                   <div className="flex flex-col">
-                    <div className="relative h-72">
+                    <div className="relative h-64">
                       <img
                         src={project.image}
                         alt={project.title}

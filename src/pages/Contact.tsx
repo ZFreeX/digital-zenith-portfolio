@@ -2,6 +2,7 @@ import { motion } from 'framer-motion';
 import Navbar from "@/components/Navbar";
 import { Button } from "@/components/ui/button";
 import { Github, Mail, MessageSquare, Linkedin } from "lucide-react";
+import ContactForm from "@/components/ContactForm";
 
 const Contact = () => {
   return (
@@ -77,6 +78,8 @@ const Contact = () => {
                 </div>
               </motion.a>
             </div>
+
+            <ContactForm />
           </div>
         </motion.div>
       </div>
