@@ -8,7 +8,7 @@ import {
   TableCell,
   TableHead,
   TableHeader,
-  TableRow,
+  TableRow, 
 } from "@/components/ui/table";
 import {
   AlertDialog,
@@ -90,6 +90,13 @@ const Admin = () => {
       setPassword("");
     }
   };
+
+  const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter') {
+      handleAuth();
+    }
+  };
+
 
   const handleMove = (id: string, direction: "up" | "down") => {
     setProjects(prevProjects => {
@@ -178,17 +185,11 @@ const Admin = () => {
           <div className="max-w-md mx-auto space-y-6">
             <h1 className="text-3xl font-bold text-white text-center mb-8">Admin Authentication</h1>
             <div className="relative">
-              {isAuthError && (
-                <img
-                  src="/lovable-uploads/bd057546-2ac6-4bd6-9c90-806fdb8907e5.png"
-                  alt="Auth Error"
-                  className="absolute -right-24 top-0 w-20 h-20 animate-pulse"
-                />
-              )}
               <Input
                 type="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
+                onKeyPress={handleKeyPress}
                 placeholder="Enter password"
                 className={`bg-dark-card border-white/20 text-white ${isAuthError ? 'animate-pulse' : ''}`}
               />
@@ -199,13 +200,21 @@ const Admin = () => {
             >
               Login
             </Button>
+            {isAuthError && (
+              <div className="flex justify-center mt-4">
+                <img
+                  src="/lovable-uploads/bd057546-2ac6-4bd6-9c90-806fdb8907e5.png"
+                  alt="Auth Error"
+                  className="w-96 h-96 object-contain animate-pulse"
+                />
+              </div>
+            )}
           </div>
         </div>
       </div>
     );
   }
 
-  // ... keep existing code (return statement with the project management UI)
   return (
     <div className="min-h-screen bg-dark">
       <Navbar />
