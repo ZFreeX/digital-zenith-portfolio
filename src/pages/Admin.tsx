@@ -76,7 +76,7 @@ const Admin = () => {
   useEffect(() => {
     if (isAuthError) {
       const timer = setTimeout(() => {
-        navigate("/#work");
+        navigate("/?section=work");
       }, 5000);
       return () => clearTimeout(timer);
     }
@@ -92,72 +92,6 @@ const Admin = () => {
     }
   };
 
-  const handleMove = (id: string, direction: "up" | "down") => {
-    const newProjects = [...projects];
-    const index = newProjects.findIndex(p => p.id === id);
-    if (direction === "up" && index > 0) {
-      [newProjects[index], newProjects[index - 1]] = [newProjects[index - 1], newProjects[index]];
-    } else if (direction === "down" && index < newProjects.length - 1) {
-      [newProjects[index], newProjects[index + 1]] = [newProjects[index + 1], newProjects[index]];
-    }
-    setProjects(newProjects);
-    toast({
-      title: "Success",
-      description: "Project order updated",
-    });
-  };
-
-  const toggleVisibility = (id: string) => {
-    setProjects(prev =>
-      prev.map(p =>
-        p.id === id
-          ? { ...p, status: p.status === "shown" ? "hidden" : "shown" }
-          : p
-      )
-    );
-    toast({
-      title: "Success",
-      description: "Project visibility updated",
-    });
-  };
-
-  const deleteProject = (id: string) => {
-    setProjects(prev => prev.filter(p => p.id !== id));
-    setDeleteConfirm(null);
-    toast({
-      title: "Success",
-      description: "Project deleted",
-    });
-  };
-
-  const handleAddProject = () => {
-    const newProjectData: Project = {
-      id: Date.now().toString(),
-      title: newProject.title,
-      description: newProject.description,
-      status: "shown",
-      order: projects.length,
-      features: newProject.features.split('\n').filter(f => f.trim()),
-      techStack: JSON.parse(newProject.techStack),
-      image: newProject.image
-    };
-    
-    setProjects(prev => [...prev, newProjectData]);
-    setIsAddingProject(false);
-    setNewProject({
-      title: "",
-      description: "",
-      features: "",
-      techStack: "",
-      image: ""
-    });
-    
-    toast({
-      title: "Success",
-      description: "Project added successfully",
-    });
-  };
-
   if (!isAuthenticated) {
     return (
       <div className="min-h-screen bg-dark">
@@ -165,25 +99,28 @@ const Admin = () => {
         <div className="container mx-auto px-4 pt-24">
           <div className="max-w-md mx-auto space-y-6">
             <h1 className="text-3xl font-bold text-white text-center mb-8">Admin Authentication</h1>
-            {isAuthError ? (
-              <Skeleton className="w-full h-12 bg-red-500/20" />
-            ) : (
-              <>
-                <Input
-                  type="password"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  placeholder="Enter password"
-                  className="bg-dark-card border-white/20 text-white"
+            <div className="relative">
+              {isAuthError && (
+                <img
+                  src="/placeholder.svg"
+                  alt="Auth Error"
+                  className="absolute -right-24 top-0 w-20 h-20 animate-blink"
                 />
-                <Button 
-                  onClick={handleAuth}
-                  className="w-full bg-primary hover:bg-primary/90"
-                >
-                  Login
-                </Button>
-              </>
-            )}
+              )}
+              <Input
+                type="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                placeholder="Enter password"
+                className={`bg-dark-card border-white/20 text-white ${isAuthError ? 'animate-blink' : ''}`}
+              />
+            </div>
+            <Button 
+              onClick={handleAuth}
+              className="w-full bg-primary hover:bg-primary/90"
+            >
+              Login
+            </Button>
           </div>
         </div>
       </div>
@@ -198,7 +135,7 @@ const Admin = () => {
           <h1 className="text-4xl font-bold text-white">Project Management</h1>
           <Button 
             onClick={() => setIsAddingProject(true)}
-            className="bg-primary hover:bg-primary/90 text-lg px-6 py-3 h-auto"
+            className="bg-primary hover:bg-primary/90"
           >
             <Plus className="w-5 h-5 mr-2" /> Add New Project
           </Button>
@@ -278,21 +215,21 @@ const Admin = () => {
                         variant="ghost"
                         size="lg"
                         onClick={() => toggleVisibility(project.id)}
-                        className="text-white/60 hover:bg-primary/20 hover:text-white"
+                        className="text-white/60 hover:bg-primary/20 hover:text-white p-3"
                       >
                         {project.status === "shown" ? (
-                          <EyeOff className="w-6 h-6" />
+                          <EyeOff className="w-8 h-8" />
                         ) : (
-                          <Eye className="w-6 h-6" />
+                          <Eye className="w-8 h-8" />
                         )}
                       </Button>
                       <Button
                         variant="ghost"
                         size="lg"
                         onClick={() => setDeleteConfirm(project.id)}
-                        className="text-red-500 hover:bg-red-500/20 hover:text-red-400"
+                        className="text-red-500 hover:bg-red-500/20 hover:text-red-400 p-3"
                       >
-                        <Trash2 className="w-6 h-6" />
+                        <Trash2 className="w-8 h-8" />
                       </Button>
                     </div>
                   </TableCell>
