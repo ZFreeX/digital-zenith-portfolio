@@ -23,7 +23,6 @@ import {
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
-import { Skeleton } from "@/components/ui/skeleton";
 import { Plus, ChevronDown, ChevronUp, Trash2, Eye, EyeOff } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
@@ -92,6 +91,85 @@ const Admin = () => {
     }
   };
 
+  const handleMove = (id: string, direction: "up" | "down") => {
+    setProjects(prevProjects => {
+      const projectIndex = prevProjects.findIndex(p => p.id === id);
+      if (
+        (direction === "up" && projectIndex === 0) ||
+        (direction === "down" && projectIndex === prevProjects.length - 1)
+      ) {
+        return prevProjects;
+      }
+
+      const newProjects = [...prevProjects];
+      const swapIndex = direction === "up" ? projectIndex - 1 : projectIndex + 1;
+      [newProjects[projectIndex], newProjects[swapIndex]] = [
+        newProjects[swapIndex],
+        newProjects[projectIndex],
+      ];
+
+      return newProjects;
+    });
+  };
+
+  const toggleVisibility = (id: string) => {
+    setProjects(prevProjects =>
+      prevProjects.map(project =>
+        project.id === id
+          ? { ...project, status: project.status === "shown" ? "hidden" : "shown" }
+          : project
+      )
+    );
+  };
+
+  const handleAddProject = () => {
+    try {
+      const techStackObj = JSON.parse(newProject.techStack);
+      const newId = (Math.max(...projects.map(p => parseInt(p.id))) + 1).toString();
+      
+      const projectToAdd: Project = {
+        id: newId,
+        title: newProject.title,
+        description: newProject.description,
+        status: "shown",
+        order: projects.length,
+        features: newProject.features.split('\n').filter(f => f.trim()),
+        techStack: techStackObj,
+        image: newProject.image || "/placeholder.svg"
+      };
+
+      setProjects(prev => [...prev, projectToAdd]);
+      setIsAddingProject(false);
+      setNewProject({
+        title: "",
+        description: "",
+        features: "",
+        techStack: "",
+        image: ""
+      });
+      
+      toast({
+        title: "Success",
+        description: "Project added successfully",
+      });
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "Invalid tech stack format. Please use valid JSON.",
+        variant: "destructive",
+      });
+    }
+  };
+
+  const deleteProject = (id: string) => {
+    setProjects(prevProjects => prevProjects.filter(project => project.id !== id));
+    setDeleteConfirm(null);
+    toast({
+      title: "Success",
+      description: "Project deleted successfully",
+    });
+  };
+
   if (!isAuthenticated) {
     return (
       <div className="min-h-screen bg-dark">
@@ -102,9 +180,9 @@ const Admin = () => {
             <div className="relative">
               {isAuthError && (
                 <img
-                  src="/placeholder.svg"
+                  src="/lovable-uploads/bd057546-2ac6-4bd6-9c90-806fdb8907e5.png"
                   alt="Auth Error"
-                  className="absolute -right-24 top-0 w-20 h-20 animate-blink"
+                  className="absolute -right-24 top-0 w-20 h-20 animate-pulse"
                 />
               )}
               <Input
@@ -112,7 +190,7 @@ const Admin = () => {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="Enter password"
-                className={`bg-dark-card border-white/20 text-white ${isAuthError ? 'animate-blink' : ''}`}
+                className={`bg-dark-card border-white/20 text-white ${isAuthError ? 'animate-pulse' : ''}`}
               />
             </div>
             <Button 
@@ -127,6 +205,7 @@ const Admin = () => {
     );
   }
 
+  // ... keep existing code (return statement with the project management UI)
   return (
     <div className="min-h-screen bg-dark">
       <Navbar />
