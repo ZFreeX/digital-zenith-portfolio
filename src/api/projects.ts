@@ -41,3 +41,15 @@ export async function updateOrder(id: string, direction: 'up' | 'down') {
     });
     if (!response.ok) throw new Error('Failed to update order');
 }
+
+export async function fetchPublicProjects() {
+    const response = await fetch(`${API_URL}/public`);
+    if (!response.ok) throw new Error('Failed to fetch public projects');
+    return response.json();
+}
+
+export async function fetchProjectById(id: string) {
+    const response = await fetch(`${API_URL}/${id}`);
+    if (!response.ok) throw new Error('Failed to fetch project');
+    return response.json();
+}

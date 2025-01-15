@@ -108,29 +108,33 @@ const Admin = () => {
   const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
+    
     const formData = new FormData();
     formData.append('image', file);
+    
     try {
-      const response = await fetch('/api/upload', {
-        method: 'POST',
-        body: formData
-      });
-      if (!response.ok) throw new Error('Upload failed');
-      const data = await response.json();
-      setNewProject(prev => ({ ...prev, image: data.url }));
-      
-      toast({
-        title: "Success",
-        description: "Image uploaded successfully",
-      });
+        const response = await fetch('http://localhost:8080/api/upload', {
+            method: 'POST',
+            body: formData
+        });
+        
+        if (!response.ok) throw new Error('Upload failed');
+        
+        const data = await response.json();
+        setNewProject(prev => ({ ...prev, image: data.url }));
+        
+        toast({
+            title: "Success",
+            description: "Image uploaded successfully",
+        });
     } catch (error) {
-      toast({
-        title: "Error",
-        description: "Failed to upload image",
-        variant: "destructive",
-      });
+        toast({
+            title: "Error",
+            description: "Failed to upload image",
+            variant: "destructive",
+        });
     }
-  };
+};
 
 
   const handleMove = async (id: string, direction: "up" | "down") => {

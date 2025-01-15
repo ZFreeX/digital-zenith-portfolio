@@ -1,39 +1,43 @@
 import { motion } from "framer-motion";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Link } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { fetchPublicProjects } from "../api/projects";
 
-const projects = [
-  {
-    title: "AI-Powered Telegram Bot",
-    description: "A sophisticated Telegram bot leveraging OpenAI's GPT-4 for natural language processing and automated responses.",
-    image: "/placeholder.svg",
-    tags: ["Python", "OpenAI API", "Telegram API"],
-    link: "/project/telegram-bot"
-  },
-  {
-    title: "Web3 Portfolio Tracker",
-    description: "Real-time cryptocurrency portfolio tracking application with advanced analytics and market insights.",
-    image: "/placeholder.svg",
-    tags: ["Next.js", "TypeScript", "Web3.js"],
-    link: "/project/web3-tracker"
-  },
-  {
-    title: "Automated Pinterest Manager",
-    description: "Pinterest marketing automation tool for scheduling, analytics, and content optimization.",
-    image: "/placeholder.svg",
-    tags: ["Python", "Selenium", "PostgreSQL"],
-    link: "/project/pinterest-manager"
-  }
-];
+const truncateDescription = (description: string) => {
+  const sentences = description.match(/[^.!?]+[.!?]+/g) || [];
+  return sentences.slice(0, 3).join(' ');
+};
 
 const Projects = () => {
+  const [projects, setProjects] = useState<Project[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const loadProjects = async () => {
+      try {
+        const data = await fetchPublicProjects();
+        setProjects(data);
+      } catch (error) {
+        console.error('Failed to load projects:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    loadProjects();
+  }, []);
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+
   return (
     <section className="py-20 bg-dark" id="work">
       <div className="container mx-auto px-4">
         <h2 className="text-4xl font-bold text-white mb-16 text-center">Featured Projects</h2>
         <div className="grid grid-cols-1 gap-24 max-w-3xl mx-auto">
           {projects.map((project, index) => (
-            <Link to={project.link} key={index}>
+            <Link to={`/project/${project.id}`} key={project.id}>
               <motion.div
                 initial={{ opacity: 0, y: 50 }}
                 whileInView={{ opacity: 1, y: 0 }}
@@ -53,9 +57,11 @@ const Projects = () => {
                   <div className="flex flex-col">
                     <div className="relative h-64">
                       <img
-                        src={project.image}
+                        src={project.image_url.startsWith('http') 
+                          ? project.image_url 
+                          : `http://localhost:8080${project.image_url}`}
                         alt={project.title}
-                        className="w-full h-full object-cover"
+                        className="w-full h-64 object-cover"
                       />
                     </div>
                     <div className="p-8">
@@ -69,14 +75,16 @@ const Projects = () => {
                       </CardHeader>
                       <CardContent className="p-0 mt-6">
                         <div className="flex flex-wrap gap-3">
-                          {project.tags.map((tag, tagIndex) => (
-                            <span
-                              key={tagIndex}
-                              className="px-4 py-1.5 bg-primary/10 text-primary rounded-full text-sm font-medium"
-                            >
-                              {tag}
-                            </span>
-                          ))}
+                          {Object.entries(project.techStack).flatMap(([category, techs]) =>
+                            techs.map((tech, techIndex) => (
+                              <span
+                                key={`${category}-${techIndex}`}
+                                className="px-4 py-1.5 bg-primary/10 text-primary rounded-full text-sm font-medium"
+                              >
+                                {tech}
+                              </span>
+                            ))
+                          )}
                         </div>
                       </CardContent>
                     </div>
