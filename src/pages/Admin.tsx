@@ -23,20 +23,22 @@ import {
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
-import { Plus, ChevronDown, ChevronUp, Trash2, Eye, EyeOff } from "lucide-react";
+import { Plus, ChevronDown, ChevronUp, Trash2, Eye, EyeOff, Upload } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
 import { Textarea } from "@/components/ui/textarea";
+import { fetchProjects, createProject, deleteProject, toggleVisibility, updateOrder } from '../api/projects';
 
 interface Project {
   id: string;
   title: string;
   description: string;
   status: "shown" | "hidden";
-  order: number;
+  image_url: string;
   features: string[];
   techStack: Record<string, string[]>;
-  image: string;
+  created_at: string;
+  updated_at: string;
 }
 
 const Admin = () => {
@@ -45,21 +47,7 @@ const Admin = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [password, setPassword] = useState("");
   const [isAuthError, setIsAuthError] = useState(false);
-  const [projects, setProjects] = useState<Project[]>([
-    {
-      id: "1",
-      title: "AI-Powered Telegram Bot",
-      description: "A sophisticated Telegram bot leveraging OpenAI's GPT-4...",
-      status: "shown",
-      order: 0,
-      features: ["Natural language processing", "Multi-language support"],
-      techStack: {
-        Backend: ["Python", "OpenAI API"],
-        Frontend: ["React", "TypeScript"]
-      },
-      image: "/placeholder.svg"
-    },
-  ]);
+  const [projects, setProjects] = useState<Project[]>([]);
   
   const [expandedProject, setExpandedProject] = useState<string | null>(null);
   const [deleteConfirm, setDeleteConfirm] = useState<string | null>(null);
@@ -81,6 +69,25 @@ const Admin = () => {
     }
   }, [isAuthError, navigate]);
 
+  useEffect(() => {
+    if (isAuthenticated) {
+      const loadProjects = async () => {
+        try {
+          const data = await fetchProjects();
+          setProjects(data || []); // Ensure we never set null
+        } catch (error) {
+          toast({
+            title: "Error",
+            description: "Failed to load projects",
+            variant: "destructive",
+          });
+          setProjects([]); // Set empty array on error
+        }
+      };
+      loadProjects();
+    }
+  }, [isAuthenticated]);
+
   const handleAuth = () => {
     if (password === "tied1155") {
       setIsAuthenticated(true);
@@ -98,54 +105,100 @@ const Admin = () => {
   };
 
 
-  const handleMove = (id: string, direction: "up" | "down") => {
-    setProjects(prevProjects => {
-      const projectIndex = prevProjects.findIndex(p => p.id === id);
-      if (
-        (direction === "up" && projectIndex === 0) ||
-        (direction === "down" && projectIndex === prevProjects.length - 1)
-      ) {
-        return prevProjects;
-      }
-
-      const newProjects = [...prevProjects];
-      const swapIndex = direction === "up" ? projectIndex - 1 : projectIndex + 1;
-      [newProjects[projectIndex], newProjects[swapIndex]] = [
-        newProjects[swapIndex],
-        newProjects[projectIndex],
-      ];
-
-      return newProjects;
-    });
+  const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    const formData = new FormData();
+    formData.append('image', file);
+    try {
+      const response = await fetch('/api/upload', {
+        method: 'POST',
+        body: formData
+      });
+      if (!response.ok) throw new Error('Upload failed');
+      const data = await response.json();
+      setNewProject(prev => ({ ...prev, image: data.url }));
+      
+      toast({
+        title: "Success",
+        description: "Image uploaded successfully",
+      });
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "Failed to upload image",
+        variant: "destructive",
+      });
+    }
   };
 
-  const toggleVisibility = (id: string) => {
-    setProjects(prevProjects =>
-      prevProjects.map(project =>
-        project.id === id
-          ? { ...project, status: project.status === "shown" ? "hidden" : "shown" }
-          : project
-      )
-    );
+
+  const handleMove = async (id: string, direction: "up" | "down") => {
+    try {
+      await updateOrder(id, direction);
+      const updatedProjects = await fetchProjects();
+      setProjects(updatedProjects);
+      
+      toast({
+        title: "Success",
+        description: "Project order updated successfully",
+      });
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "Failed to update project order",
+        variant: "destructive",
+      });
+    }
   };
 
-  const handleAddProject = () => {
+  const toggleProjectVisibility = async (id: string) => {
+    try {
+      const project = projects.find(p => p.id === id);
+      if (!project) return;
+
+      const newStatus = project.status === "shown" ? "hidden" : "shown";
+      await toggleVisibility(id, newStatus);
+      
+      setProjects(prevProjects =>
+        prevProjects.map(project =>
+          project.id === id
+            ? { ...project, status: newStatus }
+            : project
+        )
+      );
+
+      toast({
+        title: "Success",
+        description: `Project ${newStatus === "shown" ? "shown" : "hidden"} successfully`,
+      });
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "Failed to update project visibility",
+        variant: "destructive",
+      });
+    }
+  };
+
+  const handleAddProject = async () => {
     try {
       const techStackObj = JSON.parse(newProject.techStack);
-      const newId = (Math.max(...projects.map(p => parseInt(p.id))) + 1).toString();
-      
-      const projectToAdd: Project = {
-        id: newId,
+      const projectToAdd = {
         title: newProject.title,
         description: newProject.description,
         status: "shown",
-        order: projects.length,
         features: newProject.features.split('\n').filter(f => f.trim()),
         techStack: techStackObj,
-        image: newProject.image || "/placeholder.svg"
+        image_url: newProject.image || "/placeholder.svg"
       };
 
-      setProjects(prev => [...prev, projectToAdd]);
+      await createProject(projectToAdd);
+      
+      // Fetch updated projects list
+      const updatedProjects = await fetchProjects();
+      setProjects(updatedProjects);
+      
       setIsAddingProject(false);
       setNewProject({
         title: "",
@@ -162,19 +215,28 @@ const Admin = () => {
     } catch (error) {
       toast({
         title: "Error",
-        description: "Invalid tech stack format. Please use valid JSON.",
+        description: error instanceof Error ? error.message : "Failed to add project",
         variant: "destructive",
       });
     }
   };
 
-  const deleteProject = (id: string) => {
-    setProjects(prevProjects => prevProjects.filter(project => project.id !== id));
-    setDeleteConfirm(null);
-    toast({
-      title: "Success",
-      description: "Project deleted successfully",
-    });
+  const handleDeleteProject = async (id: string) => {
+    try {
+      await deleteProject(id);
+      setProjects(prevProjects => prevProjects.filter(project => project.id !== id));
+      setDeleteConfirm(null);
+      toast({
+        title: "Success",
+        description: "Project deleted successfully",
+      });
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "Failed to delete project",
+        variant: "destructive",
+      });
+    }
   };
 
   if (!isAuthenticated) {
@@ -182,7 +244,7 @@ const Admin = () => {
       <div className="min-h-screen bg-dark">
         <Navbar />
         <div className="container mx-auto px-4 pt-24">
-          <div className="max-w-md mx-auto space-y-6">
+          <div className="max-w-md mx-auto space-y-4">
             <h1 className="text-3xl font-bold text-white text-center mb-8">Admin Authentication</h1>
             <div className="relative">
               <Input
@@ -302,7 +364,7 @@ const Admin = () => {
                       <Button
                         variant="ghost"
                         size="lg"
-                        onClick={() => toggleVisibility(project.id)}
+                        onClick={() => toggleProjectVisibility(project.id)}
                         className="text-white/60 hover:bg-primary/20 hover:text-white p-3"
                       >
                         {project.status === "shown" ? (
@@ -328,10 +390,10 @@ const Admin = () => {
         </div>
 
         <Dialog open={isAddingProject} onOpenChange={setIsAddingProject}>
-          <DialogContent className="bg-dark-card border-white/10 text-white max-w-2xl">
-            <DialogHeader>
-              <DialogTitle className="text-2xl">Add New Project</DialogTitle>
-            </DialogHeader>
+    <DialogContent className="bg-dark-card border-white/10 text-white max-w-2xl">
+        <DialogHeader>
+            <DialogTitle className="text-2xl">Add New Project</DialogTitle>
+        </DialogHeader>
             <div className="space-y-6 py-4">
               <div className="space-y-2">
                 <label className="text-sm font-medium">Title</label>
@@ -368,13 +430,28 @@ const Admin = () => {
                 />
               </div>
               <div className="space-y-2">
-                <label className="text-sm font-medium">Image URL</label>
-                <Input
-                  value={newProject.image}
-                  onChange={(e) => setNewProject(prev => ({ ...prev, image: e.target.value }))}
-                  className="bg-dark border-white/20"
-                  placeholder="/path/to/image.jpg"
-                />
+              <label className="text-sm font-medium">Cover Image</label>
+                <div className="flex items-center gap-4">
+                  <Button
+                    onClick={() => document.getElementById('imageUpload')?.click()}
+                    className="bg-primary/20 hover:bg-primary/30 text-primary"
+                  >
+                    <Upload className="w-5 h-5 mr-2" />
+                    Upload Image
+                  </Button>
+                  <input
+                    type="file"
+                    id="imageUpload"
+                    accept="image/*"
+                    onChange={handleImageUpload}
+                    className="hidden"
+                  />
+                  {newProject.image && (
+                    <span className="text-white/60">
+                      Image selected: {newProject.image.split('/').pop()}
+                    </span>
+                  )}
+                </div>
               </div>
             </div>
             <DialogFooter>
@@ -409,7 +486,7 @@ const Admin = () => {
               </AlertDialogCancel>
               <AlertDialogAction
                 className="bg-red-500 text-white hover:bg-red-600 text-lg"
-                onClick={() => deleteConfirm && deleteProject(deleteConfirm)}
+                onClick={() => deleteConfirm && handleDeleteProject(deleteConfirm)}
               >
                 Delete
               </AlertDialogAction>
