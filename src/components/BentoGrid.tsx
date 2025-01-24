@@ -148,7 +148,7 @@ const BentoGrid = () => {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             whileHover={{ scale: 1.02 }}
-            className="bg-dark-card p-6 rounded-2xl hover:shadow-lg hover:shadow-primary/20 transition-all duration-300 h-[280px]"
+            className="bg-dark-card p-6 rounded-2xl hover:shadow-lg hover:shadow-primary/20 transition-all duration-300 h-[200px]"
           >
             <Link to="/articles" className="block h-full">
               <div className="flex items-center justify-between mb-4">
@@ -156,7 +156,7 @@ const BentoGrid = () => {
                 <Tag className="w-5 h-5 text-primary" />
               </div>
               <h4 className="font-medium text-white mb-3 text-lg">Understanding Modern Web Architecture</h4>
-              <p className="text-sm text-white/60 line-clamp-3 mb-4">
+              <p className="text-sm text-white/60 line-clamp-2 mb-4">
                 In today's digital landscape, understanding modern web architecture is crucial for building scalable and maintainable applications.
               </p>
               <div className="flex flex-wrap gap-2">
@@ -176,7 +176,7 @@ const BentoGrid = () => {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             whileHover={{ scale: 1.02 }}
-            className="bg-dark-card p-6 rounded-2xl md:col-span-2 relative overflow-hidden hover:shadow-lg hover:shadow-primary/20 transition-all duration-300 h-[280px]"
+            className="bg-dark-card p-6 rounded-2xl md:col-span-2 relative overflow-hidden hover:shadow-lg hover:shadow-primary/20 transition-all duration-300 h-[200px]"
           >
             <div className="absolute inset-0 opacity-50">
               <div className="absolute top-1/2 left-1/4 w-64 h-64 rounded-full bg-gradient-to-r from-primary/30 to-transparent mix-blend-screen" />
