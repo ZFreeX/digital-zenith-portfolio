@@ -5,7 +5,6 @@ const Navbar = () => {
   const navigate = useNavigate();
 
   const scrollToSection = (id: string) => {
-    // If we're not on the home page, navigate there first
     if (window.location.pathname !== '/') {
       navigate('/?section=' + id);
       return;
@@ -48,6 +47,12 @@ const Navbar = () => {
             className="text-white hover:text-primary transition-colors"
           >
             Resume
+          </Link>
+          <Link 
+            to="/articles" 
+            className="text-white hover:text-primary transition-colors"
+          >
+            Articles
           </Link>
           <Link to="/contact">
             <Button 

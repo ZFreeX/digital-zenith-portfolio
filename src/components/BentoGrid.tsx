@@ -140,6 +140,30 @@ const BentoGrid = () => {
             </div>
           </motion.div>
 
+          {/* Latest Article */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            whileHover={{ scale: 1.02 }}
+            className="bg-dark-card p-6 rounded-2xl hover:shadow-lg hover:shadow-primary/20 transition-all duration-300"
+          >
+            <Link to="/articles" className="block">
+              <h3 className="text-xl font-semibold mb-4 text-white">Latest Article</h3>
+              <div className="relative h-32 mb-4">
+                <img
+                  src="/placeholder.svg"
+                  alt="Latest Article"
+                  className="w-full h-full object-cover rounded-lg"
+                />
+              </div>
+              <h4 className="font-medium text-white mb-2">Understanding Modern Web Architecture</h4>
+              <p className="text-sm text-white/60 line-clamp-2">
+                In today's digital landscape, understanding modern web architecture is crucial for building scalable and maintainable applications.
+              </p>
+            </Link>
+          </motion.div>
+
           {/* Approach */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
