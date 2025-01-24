@@ -5,9 +5,6 @@ import { Button } from "@/components/ui/button";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import ReactMarkdown from 'react-markdown';
 
-// Add ReactMarkdown package
-<lov-add-dependency>react-markdown@latest</lov-add-dependency>
-
 const ArticlePage = () => {
   const { id } = useParams();
   

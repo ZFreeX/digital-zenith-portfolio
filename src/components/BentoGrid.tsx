@@ -2,6 +2,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { motion } from "framer-motion";
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import { ChevronLeft, ChevronRight, Twitter, Send } from "lucide-react";
 
 const BentoGrid = () => {
