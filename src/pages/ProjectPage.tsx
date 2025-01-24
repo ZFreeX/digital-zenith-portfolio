@@ -1,4 +1,5 @@
 import { useParams, Link } from "react-router-dom";
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -80,7 +81,7 @@ const ProjectPage = () => {
 
             <h2 className="text-2xl font-semibold text-white mb-4">Features</h2>
             <ul className="space-y-2 mb-8">
-              {project.features.map((feature, index) => (
+              {project.features && project.features.map((feature, index) => (
                 <li key={index} className="text-white/80">{feature}</li>
               ))}
             </ul>
