@@ -6,6 +6,7 @@ import { ChevronLeft, ChevronRight } from "lucide-react";
 import { toast } from "sonner";
 import { useState, useEffect } from 'react';
 import { fetchProjectById } from "../api/projects";
+import { Project } from '../api/projects';
 
 const ProjectPage = () => {
   const { id } = useParams();

@@ -2,7 +2,7 @@ import { motion } from "framer-motion";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Link } from "react-router-dom";
 import { useState, useEffect } from "react";
-import { fetchPublicProjects } from "../api/projects";
+import { fetchPublicProjects, Project } from "../api/projects";
 
 const truncateDescription = (description: string) => {
   const sentences = description.match(/[^.!?]+[.!?]+/g) || [];

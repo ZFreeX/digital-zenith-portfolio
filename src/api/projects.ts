@@ -1,3 +1,22 @@
+// portfolio/frontend/models/project.ts
+
+export interface Project {
+    id: string;
+    title: string;
+    description: string;
+    image_url: string;
+    status: "shown" | "hidden";
+    tags: string[];
+    techStack: Record<string, string[]>;
+    features: string[];
+    next?: string; // Optional, as it may not always be present
+    prev?: string; // Optional, as it may not always be present
+    created_at: string; // Use string for date representation
+    updated_at: string; // Use string for date representation
+}
+
+
+
 const API_URL = 'http://localhost:8080/api/projects';
 
 export async function fetchProjects() {
@@ -53,3 +72,4 @@ export async function fetchProjectById(id: string) {
     if (!response.ok) throw new Error('Failed to fetch project');
     return response.json();
 }
+
