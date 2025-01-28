@@ -2,7 +2,9 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { motion } from "framer-motion";
 import { useState } from "react";
-import { ChevronLeft, ChevronRight, Twitter, Send } from "lucide-react";
+import { Link } from "react-router-dom";
+import { ChevronLeft, ChevronRight, Twitter, Send, Tag } from "lucide-react";
+import { Badge } from "@/components/ui/badge";
 
 const BentoGrid = () => {
   const [currentImage, setCurrentImage] = useState(0);
@@ -140,13 +142,41 @@ const BentoGrid = () => {
             </div>
           </motion.div>
 
+          {/* Latest Article */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            whileHover={{ scale: 1.02 }}
+            className="bg-dark-card p-6 rounded-2xl hover:shadow-lg hover:shadow-primary/20 transition-all duration-300 h-[200px]"
+          >
+            <Link to="/articles" className="block h-full">
+              <div className="flex items-center justify-between mb-4">
+                <h3 className="text-xl font-semibold text-white">Latest Article</h3>
+                <Tag className="w-5 h-5 text-primary" />
+              </div>
+              <h4 className="font-medium text-white mb-3 text-lg">Understanding Modern Web Architecture</h4>
+              <p className="text-sm text-white/60 line-clamp-2 mb-4">
+                In today's digital landscape, understanding modern web architecture is crucial for building scalable and maintainable applications.
+              </p>
+              <div className="flex flex-wrap gap-2">
+                <Badge variant="outline" className="bg-primary/10 text-primary border-none">
+                  Architecture
+                </Badge>
+                <Badge variant="outline" className="bg-secondary/10 text-secondary border-none">
+                  Web Dev
+                </Badge>
+              </div>
+            </Link>
+          </motion.div>
+
           {/* Approach */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             whileHover={{ scale: 1.02 }}
-            className="bg-dark-card p-6 rounded-2xl md:col-span-2 relative overflow-hidden hover:shadow-lg hover:shadow-primary/20 transition-all duration-300"
+            className="bg-dark-card p-6 rounded-2xl md:col-span-2 relative overflow-hidden hover:shadow-lg hover:shadow-primary/20 transition-all duration-300 h-[200px]"
           >
             <div className="absolute inset-0 opacity-50">
               <div className="absolute top-1/2 left-1/4 w-64 h-64 rounded-full bg-gradient-to-r from-primary/30 to-transparent mix-blend-screen" />

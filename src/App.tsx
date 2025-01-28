@@ -5,6 +5,8 @@ import Contact from "@/pages/Contact";
 import Resume from "@/pages/Resume";
 import Admin from "@/pages/Admin";
 import ProjectPage from "@/pages/ProjectPage";
+import Articles from "@/pages/Articles";
+import ArticlePage from "@/pages/ArticlePage";
 
 function App() {
   return (
@@ -16,6 +18,8 @@ function App() {
         <Route path="/resume" element={<Resume />} />
         <Route path="/admin" element={<Admin />} />
         <Route path="/project/:id" element={<ProjectPage />} />
+        <Route path="/articles" element={<Articles />} />
+        <Route path="/article/:id" element={<ArticlePage />} />
       </Routes>
     </Router>
   );

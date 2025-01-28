@@ -27,7 +27,6 @@ import { Plus, ChevronDown, ChevronUp, Trash2, Eye, EyeOff, Upload } from "lucid
 import { useToast } from "@/hooks/use-toast";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
 import { Textarea } from "@/components/ui/textarea";
-import { fetchProjects, createProject, deleteProject, toggleVisibility, updateOrder } from '../api/projects';
 
 interface Project {
   id: string;
@@ -37,6 +36,18 @@ interface Project {
   image_url: string;
   features: string[];
   techStack: Record<string, string[]>;
+  created_at: string;
+  updated_at: string;
+}
+
+interface Article {
+  id: string;
+  title: string;
+  content: string;
+  preview: string;
+  tags: string[];
+  image_url: string;
+  status: "published" | "draft";
   created_at: string;
   updated_at: string;
 }
@@ -57,6 +68,16 @@ const Admin = () => {
     description: "",
     features: "",
     techStack: "",
+    image: ""
+  });
+
+  const [isAddingArticle, setIsAddingArticle] = useState(false);
+  const [articles, setArticles] = useState<Article[]>([]);
+  const [deleteArticleConfirm, setDeleteArticleConfirm] = useState<string | null>(null);
+  const [newArticle, setNewArticle] = useState({
+    title: "",
+    content: "",
+    tags: "",
     image: ""
   });
 
@@ -104,7 +125,6 @@ const Admin = () => {
     }
   };
 
-
   const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
@@ -134,8 +154,7 @@ const Admin = () => {
             variant: "destructive",
         });
     }
-};
-
+  };
 
   const handleMove = async (id: string, direction: "up" | "down") => {
     try {
@@ -238,6 +257,116 @@ const Admin = () => {
       toast({
         title: "Error",
         description: "Failed to delete project",
+        variant: "destructive",
+      });
+    }
+  };
+
+  const handleArticleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    
+    const formData = new FormData();
+    formData.append('image', file);
+    
+    try {
+      const response = await fetch('http://localhost:8080/api/upload', {
+        method: 'POST',
+        body: formData
+      });
+      
+      if (!response.ok) throw new Error('Upload failed');
+      
+      const data = await response.json();
+      setNewArticle(prev => ({ ...prev, image: data.url }));
+      
+      toast({
+        title: "Success",
+        description: "Image uploaded successfully",
+      });
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "Failed to upload image",
+        variant: "destructive",
+      });
+    }
+  };
+
+  const handleAddArticle = async () => {
+    try {
+      const articleToAdd = {
+        title: newArticle.title,
+        content: newArticle.content,
+        tags: newArticle.tags.split(',').map(tag => tag.trim()),
+        image_url: newArticle.image || "/placeholder.svg",
+        status: "published"
+      };
+
+      // Add API call here when backend is ready
+      setIsAddingArticle(false);
+      setNewArticle({
+        title: "",
+        content: "",
+        tags: "",
+        image: ""
+      });
+      
+      toast({
+        title: "Success",
+        description: "Article added successfully",
+      });
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "Failed to add article",
+        variant: "destructive",
+      });
+    }
+  };
+
+  const toggleArticleVisibility = async (id: string) => {
+    try {
+      const article = articles.find(a => a.id === id);
+      if (!article) return;
+
+      const newStatus = article.status === "published" ? "draft" : "published";
+      
+      // Add API call here when backend is ready
+      setArticles(prevArticles =>
+        prevArticles.map(article =>
+          article.id === id
+            ? { ...article, status: newStatus }
+            : article
+        )
+      );
+
+      toast({
+        title: "Success",
+        description: `Article ${newStatus === "published" ? "published" : "hidden"} successfully`,
+      });
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "Failed to update article visibility",
+        variant: "destructive",
+      });
+    }
+  };
+
+  const handleDeleteArticle = async (id: string) => {
+    try {
+      // Add API call here when backend is ready
+      setArticles(prevArticles => prevArticles.filter(article => article.id !== id));
+      setDeleteArticleConfirm(null);
+      toast({
+        title: "Success",
+        description: "Article deleted successfully",
+      });
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "Failed to delete article",
         variant: "destructive",
       });
     }
@@ -394,10 +523,10 @@ const Admin = () => {
         </div>
 
         <Dialog open={isAddingProject} onOpenChange={setIsAddingProject}>
-    <DialogContent className="bg-dark-card border-white/10 text-white max-w-2xl">
-        <DialogHeader>
-            <DialogTitle className="text-2xl">Add New Project</DialogTitle>
-        </DialogHeader>
+          <DialogContent className="bg-dark-card border-white/10 text-white max-w-2xl">
+            <DialogHeader>
+              <DialogTitle className="text-2xl">Add New Project</DialogTitle>
+            </DialogHeader>
             <div className="space-y-6 py-4">
               <div className="space-y-2">
                 <label className="text-sm font-medium">Title</label>
@@ -434,7 +563,7 @@ const Admin = () => {
                 />
               </div>
               <div className="space-y-2">
-              <label className="text-sm font-medium">Cover Image</label>
+                <label className="text-sm font-medium">Cover Image</label>
                 <div className="flex items-center gap-4">
                   <Button
                     onClick={() => document.getElementById('imageUpload')?.click()}
@@ -491,6 +620,179 @@ const Admin = () => {
               <AlertDialogAction
                 className="bg-red-500 text-white hover:bg-red-600 text-lg"
                 onClick={() => deleteConfirm && handleDeleteProject(deleteConfirm)}
+              >
+                Delete
+              </AlertDialogAction>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialog>
+
+        {/* Articles Section */}
+        <div className="mt-16">
+          <div className="flex justify-between items-center mb-8">
+            <h1 className="text-4xl font-bold text-white">Article Management</h1>
+            <Button 
+              onClick={() => setIsAddingArticle(true)}
+              className="bg-primary hover:bg-primary/90"
+            >
+              <Plus className="w-5 h-5 mr-2" /> Add New Article
+            </Button>
+          </div>
+
+          <div className="bg-dark-card rounded-lg shadow-lg overflow-hidden">
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead className="text-white text-lg">Title</TableHead>
+                  <TableHead className="text-white text-lg">Status</TableHead>
+                  <TableHead className="text-white text-lg text-right">Actions</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {articles.map((article) => (
+                  <motion.tr
+                    key={article.id}
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    className="border-t border-white/10"
+                  >
+                    <TableCell className="text-white text-lg">
+                      <div className="font-medium">{article.title}</div>
+                    </TableCell>
+                    <TableCell>
+                      <Badge
+                        className={`text-base px-4 py-2 ${
+                          article.status === "published"
+                            ? "bg-green-500/20 text-green-500"
+                            : "bg-yellow-500/20 text-yellow-500"
+                        }`}
+                      >
+                        {article.status}
+                      </Badge>
+                    </TableCell>
+                    <TableCell className="text-right">
+                      <div className="flex justify-end gap-3">
+                        <Button
+                          variant="ghost"
+                          size="lg"
+                          onClick={() => toggleArticleVisibility(article.id)}
+                          className="text-white/60 hover:bg-primary/20 hover:text-white p-3"
+                        >
+                          {article.status === "published" ? (
+                            <EyeOff className="w-8 h-8" />
+                          ) : (
+                            <Eye className="w-8 h-8" />
+                          )}
+                        </Button>
+                        <Button
+                          variant="ghost"
+                          size="lg"
+                          onClick={() => setDeleteArticleConfirm(article.id)}
+                          className="text-red-500 hover:bg-red-500/20 hover:text-red-400 p-3"
+                        >
+                          <Trash2 className="w-8 h-8" />
+                        </Button>
+                      </div>
+                    </TableCell>
+                  </motion.tr>
+                ))}
+              </TableBody>
+            </Table>
+          </div>
+        </div>
+
+        {/* Add Article Dialog */}
+        <Dialog open={isAddingArticle} onOpenChange={setIsAddingArticle}>
+          <DialogContent className="bg-dark-card border-white/10 text-white max-w-2xl">
+            <DialogHeader>
+              <DialogTitle className="text-2xl">Add New Article</DialogTitle>
+            </DialogHeader>
+            <div className="space-y-6 py-4">
+              <div className="space-y-2">
+                <label className="text-sm font-medium">Title</label>
+                <Input
+                  value={newArticle.title}
+                  onChange={(e) => setNewArticle(prev => ({ ...prev, title: e.target.value }))}
+                  className="bg-dark border-white/20"
+                />
+              </div>
+              <div className="space-y-2">
+                <label className="text-sm font-medium">Content (Markdown)</label>
+                <Textarea
+                  value={newArticle.content}
+                  onChange={(e) => setNewArticle(prev => ({ ...prev, content: e.target.value }))}
+                  className="bg-dark border-white/20 min-h-[200px] font-mono"
+                />
+              </div>
+              <div className="space-y-2">
+                <label className="text-sm font-medium">Tags (comma-separated)</label>
+                <Input
+                  value={newArticle.tags}
+                  onChange={(e) => setNewArticle(prev => ({ ...prev, tags: e.target.value }))}
+                  className="bg-dark border-white/20"
+                  placeholder="Web Development, Tutorial, React"
+                />
+              </div>
+              <div className="space-y-2">
+                <label className="text-sm font-medium">Cover Image</label>
+                <div className="flex items-center gap-4">
+                  <Button
+                    onClick={() => document.getElementById('articleImageUpload')?.click()}
+                    className="bg-primary/20 hover:bg-primary/30 text-primary"
+                  >
+                    <Upload className="w-5 h-5 mr-2" />
+                    Upload Image
+                  </Button>
+                  <input
+                    type="file"
+                    id="articleImageUpload"
+                    accept="image/*"
+                    onChange={handleArticleImageUpload}
+                    className="hidden"
+                  />
+                  {newArticle.image && (
+                    <span className="text-white/60">
+                      Image selected: {newArticle.image.split('/').pop()}
+                    </span>
+                  )}
+                </div>
+              </div>
+            </div>
+            <DialogFooter>
+              <Button
+                variant="ghost"
+                onClick={() => setIsAddingArticle(false)}
+                className="text-white hover:bg-white/10"
+              >
+                Cancel
+              </Button>
+              <Button
+                onClick={handleAddArticle}
+                className="bg-primary hover:bg-primary/90"
+              >
+                Publish Article
+              </Button>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
+
+        {/* Delete Article Confirmation */}
+        <AlertDialog open={!!deleteArticleConfirm} onOpenChange={() => setDeleteArticleConfirm(null)}>
+          <AlertDialogContent className="bg-dark-card border-white/10">
+            <AlertDialogHeader>
+              <AlertDialogTitle className="text-white text-xl">Are you sure?</AlertDialogTitle>
+              <AlertDialogDescription className="text-white/60 text-base">
+                This action cannot be undone. This will permanently delete the article.
+              </AlertDialogDescription>
+            </AlertDialogHeader>
+            <AlertDialogFooter>
+              <AlertDialogCancel className="bg-white/10 text-white hover:bg-white/20 text-lg">
+                Cancel
+              </AlertDialogCancel>
+              <AlertDialogAction
+                className="bg-red-500 text-white hover:bg-red-600 text-lg"
+                onClick={() => deleteArticleConfirm && handleDeleteArticle(deleteArticleConfirm)}
               >
                 Delete
               </AlertDialogAction>
