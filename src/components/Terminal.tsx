@@ -4,6 +4,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
+import { sendTelegramMessage } from "@/utils/sendTelegramMessage";
 
 const Terminal = () => {
   const [formData, setFormData] = useState({
@@ -13,8 +14,14 @@ const Terminal = () => {
   });
   const [isSubmitted, setIsSubmitted] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    const message = `
+*Name:* ${formData.name}
+*Email:* ${formData.email}
+*Message:* ${formData.message}
+    `;
+    await sendTelegramMessage(message);
     setIsSubmitted(true);
     toast.success("Message sent successfully!");
   };

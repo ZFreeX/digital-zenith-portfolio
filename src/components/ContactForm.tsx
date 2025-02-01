@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
+import { sendTelegramMessage } from "@/utils/sendTelegramMessage";
 
 const ContactForm = () => {
   const { toast } = useToast();
@@ -17,10 +18,41 @@ const ContactForm = () => {
     contact: ""
   });
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const showNotification = (message, type = 'success') => {
+    const notification = document.createElement('div');
+    notification.className = `notification ${type}`;
+    notification.textContent = message;
+    document.body.appendChild(notification);
+    
+    // Style notification
+    notification.style.position = 'fixed';
+    notification.style.top = '20px';
+    notification.style.right = '20px';
+    notification.style.padding = '15px 25px';
+    notification.style.borderRadius = '5px';
+    notification.style.backgroundColor = type === 'success' ? '#4CAF50' : '#f44336';
+    notification.style.color = 'white';
+    notification.style.zIndex = '10000';
+    notification.style.boxShadow = '0 2px 5px rgba(0,0,0,0.2)';
+    
+    // Remove notification after 5 seconds
+    setTimeout(() => {
+      notification.remove();
+    }, 5000);
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Here you would typically send the form data to your backend
-    console.log("Form submitted:", formData);
+    const message = `_Website Contact Form_
+*Name:* ${formData.name}
+*Company:* ${formData.company}
+*Project Description:* ${formData.description}
+*Expected Timeline:* ${formData.timeline}
+*Expected Budget:* ${formData.budget}
+*Contact:* ${formData.contact}
+    `;
+    await sendTelegramMessage(message);
+    showNotification("Successfully sent! I will reach out to you asap")
     toast({
       title: "Success!",
       description: "Your message has been sent. I'll get back to you soon!",
