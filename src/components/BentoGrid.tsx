@@ -112,7 +112,7 @@ const BentoGrid = () => {
               <h3 className="text-xl font-semibold text-white">Twitter</h3>
               <Twitter className="w-6 h-6 text-primary" />
             </div>
-            <Button variant="secondary" className="w-full bg-white/10 text-white hover:bg-white/20">
+            <Button variant="secondary" className="w-full bg-white/10 text-white hover:bg-white/20" onClick={() => window.open('https://x.com/0xk33n', '_blank')}>
               Follow me on Twitter
             </Button>
           </motion.div>
@@ -129,7 +129,7 @@ const BentoGrid = () => {
               <h3 className="text-xl font-semibold text-white">Telegram</h3>
               <Send className="w-6 h-6 text-secondary" />
             </div>
-            <Button variant="secondary" className="w-full bg-white/10 text-white hover:bg-white/20">
+            <Button variant="secondary" className="w-full bg-white/10 text-white hover:bg-white/20" onClick={() => window.open('https://t.me/thekeenest2', '_blank')}>
               Message on Telegram
             </Button>
           </motion.div>

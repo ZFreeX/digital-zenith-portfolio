@@ -21,7 +21,7 @@ const Contact = () => {
             
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <motion.a
-                href="https://t.me/yourusername"
+                href="https://t.me/thekeenest2"
                 target="_blank"
                 rel="noopener noreferrer"
                 whileHover={{ scale: 1.02 }}
@@ -31,12 +31,12 @@ const Contact = () => {
                 <MessageSquare className="w-6 h-6 text-primary" />
                 <div>
                   <h2 className="text-lg font-semibold">Telegram</h2>
-                  <p className="text-white/60">@yourusername</p>
+                  <p className="text-white/60">@thekeenest2</p>
                 </div>
               </motion.a>
 
               <motion.a
-                href="https://linkedin.com/in/yourusername"
+                href="https://linkedin.com/in/thekeenest"
                 target="_blank"
                 rel="noopener noreferrer"
                 whileHover={{ scale: 1.02 }}
@@ -51,7 +51,7 @@ const Contact = () => {
               </motion.a>
 
               <motion.a
-                href="mailto:your.email@example.com"
+                href="mailto:kstfbusiness@gmail.com"
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
                 className="bg-dark-card p-6 rounded-xl flex items-center gap-4 hover:bg-primary/10 transition-colors"
@@ -59,12 +59,12 @@ const Contact = () => {
                 <Mail className="w-6 h-6 text-primary" />
                 <div>
                   <h2 className="text-lg font-semibold">Email</h2>
-                  <p className="text-white/60">your.email@example.com</p>
+                  <p className="text-white/60">kstfbusiness@gmail.com</p>
                 </div>
               </motion.a>
 
               <motion.a
-                href="https://github.com/yourusername"
+                href="https://github.com/ZFreeX"
                 target="_blank"
                 rel="noopener noreferrer"
                 whileHover={{ scale: 1.02 }}
@@ -74,7 +74,7 @@ const Contact = () => {
                 <Github className="w-6 h-6 text-primary" />
                 <div>
                   <h2 className="text-lg font-semibold">GitHub</h2>
-                  <p className="text-white/60">@yourusername</p>
+                  <p className="text-white/60">@ZFreeX</p>
                 </div>
               </motion.a>
             </div>
