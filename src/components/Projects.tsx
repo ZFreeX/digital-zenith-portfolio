@@ -59,7 +59,7 @@ const Projects = () => {
                       <img
                         src={project.image_url.startsWith('http') 
                           ? project.image_url 
-                          : `http://localhost:8080${project.image_url}`}
+                          : `${import.meta.env.VITE_API_URL}${project.image_url}`}
                         alt={project.title}
                         className="w-full h-64 object-cover"
                       />

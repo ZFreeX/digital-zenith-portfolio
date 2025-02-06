@@ -51,7 +51,7 @@ const ProjectPage = () => {
 
   const imageUrl = project.image_url.startsWith('http') 
     ? project.image_url 
-    : `http://localhost:8080${project.image_url}`;
+    : `${import.meta.env.VITE_API_URL}${project.image_url}`;
 
   console.log('Previous Project ID:', project);
   console.log('Next Project ID:', project.next);  

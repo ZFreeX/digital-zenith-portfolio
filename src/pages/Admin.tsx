@@ -135,7 +135,7 @@ const Admin = () => {
     formData.append('image', file);
     
     try {
-        const response = await fetch('http://localhost:8080/api/upload', {
+        const response = await fetch(import.meta.env.VITE_API_URL + '/api/upload', {
             method: 'POST',
             body: formData
         });
@@ -272,7 +272,7 @@ const Admin = () => {
     formData.append('image', file);
     
     try {
-      const response = await fetch('http://localhost:8080/api/upload', {
+      const response = await fetch(import.meta.env.VITE_API_URL + 'api/upload', {
         method: 'POST',
         body: formData
       });

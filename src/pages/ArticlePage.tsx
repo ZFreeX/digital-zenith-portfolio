@@ -59,7 +59,7 @@ const ArticlePage = () => {
                     <img
                         src={article.image_url.startsWith('http') 
                             ? article.image_url 
-                            : `http://localhost:8080${article.image_url}`}
+                            : `${import.meta.env.VITE_API_URL}${article.image_url}`}
                         alt={article.title}
                         className="w-full h-64 object-cover rounded-xl mb-8"
                     />

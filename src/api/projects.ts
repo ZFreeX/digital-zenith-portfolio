@@ -17,7 +17,7 @@ export interface Project {
 
 
 
-const API_URL = 'http://localhost:8080/api/projects';
+const API_URL = import.meta.env.VITE_API_URL + '/api/projects';
 
 export async function fetchProjects() {
     const response = await fetch(API_URL);
