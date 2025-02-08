@@ -12,7 +12,7 @@ export interface Article {
     updated_at: string;
 }
 
-const API_URL = import.meta.env.VITE_API_URL + 'api/articles';
+const API_URL = import.meta.env.VITE_API_URL + '/api/articles';
 
 export async function fetchArticles() {
     const response = await fetch(API_URL);
