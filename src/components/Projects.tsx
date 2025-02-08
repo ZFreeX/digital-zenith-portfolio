@@ -36,7 +36,7 @@ const Projects = () => {
       <div className="container mx-auto px-4">
         <h2 className="text-4xl font-bold text-white mb-16 text-center">Featured Projects</h2>
         <div className="grid grid-cols-1 gap-24 max-w-3xl mx-auto">
-          {projects.map((project, index) => (
+          {projects.length > 0 && projects.map((project, index) => (
             <Link to={`/project/${project.id}`} key={project.id}>
               <motion.div
                 initial={{ opacity: 0, y: 50 }}

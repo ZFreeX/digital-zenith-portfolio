@@ -54,7 +54,7 @@ const Navbar = () => {
               Contact
             </Link>
             <Link 
-              to="/Konstantin_Filipovich_CV.pdf" 
+              to="/resume" 
               className="text-white hover:text-primary transition-colors"
             >
               Resume
