@@ -17,8 +17,8 @@ export interface Project {
 
 
 
-const API_URL = process.env.VITE_API_URL + '/api/projects';
-const PAS = process.env.RAILWAY_PUBLIC_DOMAIN;
+const API_URL = `${import.meta.env.VITE_API_URL}/api/projects`;
+
 
 export async function fetchProjects() {
     const response = await fetch(API_URL);
@@ -64,8 +64,7 @@ export async function updateOrder(id: string, direction: 'up' | 'down') {
 
 export async function fetchPublicProjects() {
     const response = await fetch(`${API_URL}/public`);
-    console.log("New Backend api url: ", API_URL);
-    console.log("Check random var from railway: ", PAS);
+    console.log("Actual Backend api url: ", API_URL);
     if (!response.ok) throw new Error('Failed to fetch public projects');
     return response.json();
 }
