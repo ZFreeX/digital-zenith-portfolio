@@ -22,7 +22,11 @@ const API_URL = `${import.meta.env.VITE_API_URL}/api/projects`;
 
 export async function fetchProjects() {
     const response = await fetch(API_URL);
-    if (!response.ok) throw new Error('Failed to fetch projects');
+    if (!response.ok) {
+        const errorText = await response.text();
+        console.error("Error response:", errorText);
+        throw new Error(`HTTP error! status: ${response.status}`);
+    }
     return response.json();
 }
 
@@ -65,7 +69,11 @@ export async function updateOrder(id: string, direction: 'up' | 'down') {
 export async function fetchPublicProjects() {
     const response = await fetch(`${API_URL}/public`);
     console.log("Actual Backend api url: ", API_URL);
-    if (!response.ok) throw new Error('Failed to fetch public projects');
+    if (!response.ok) {
+        const errorText = await response.text();
+        console.error("Error response:", errorText);
+        throw new Error(`HTTP error! status: ${response.status}`);
+    }
     return response.json();
 }
 
