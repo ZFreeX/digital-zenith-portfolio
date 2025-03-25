@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { toast } from "sonner";
 import { fetchProjectById } from "../api/projects";
-import { Project } from "../types/project";
+import type { Project } from "../types/project";
 
 const ProjectPage = () => {
   const { id } = useParams();
@@ -164,7 +164,7 @@ const ProjectPage = () => {
               <div>
                 <h2 className="text-2xl font-semibold mb-4">Features</h2>
                 <ul className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  {project.features && project.features.map((feature, index) => (
+                  {project.features && Array.isArray(project.features) && project.features.map((feature, index) => (
                     <li key={index} className="flex items-center gap-2">
                       <span className="w-2 h-2 bg-primary rounded-full"></span>
                       <span className="text-white/70">{feature}</span>
