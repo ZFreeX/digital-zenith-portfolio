@@ -1,3 +1,4 @@
+
 interface Project {
   id: string;
   title: string;
@@ -7,6 +8,8 @@ interface Project {
   techStack: {
     [key: string]: string[];
   };
+  demo_video_url?: string;
+  screen_type?: "mobile" | "pc";
   prev?: string;
   next?: string;
 }

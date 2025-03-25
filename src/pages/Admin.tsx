@@ -23,12 +23,34 @@ import {
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
-import { Plus, ChevronDown, ChevronUp, Trash2, Eye, EyeOff, Upload } from "lucide-react";
+import { 
+  Plus, 
+  ChevronDown, 
+  ChevronUp, 
+  Trash2, 
+  Eye, 
+  EyeOff, 
+  Upload, 
+  Smartphone, 
+  Monitor 
+} from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
 import { Textarea } from "@/components/ui/textarea";
-import { fetchProjects, updateOrder, createProject, toggleVisibility, deleteProject} from "@/api/projects";
-import { fetchArticles, createArticle, deleteArticle } from "@/api/articles";
+import { 
+  fetchProjects, 
+  updateOrder, 
+  createProject, 
+  toggleVisibility, 
+  deleteProject
+} from "@/api/projects";
+import { 
+  fetchArticles, 
+  createArticle, 
+  deleteArticle 
+} from "@/api/articles";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { Label } from "@/components/ui/label";
 
 interface Project {
   id: string;
@@ -38,6 +60,8 @@ interface Project {
   image_url: string;
   features: string[];
   techStack: Record<string, string[]>;
+  demo_video_url?: string;
+  screen_type?: "mobile" | "pc";
   created_at: string;
   updated_at: string;
 }
@@ -70,7 +94,9 @@ const Admin = () => {
     description: "",
     features: "",
     techStack: "",
-    image: ""
+    image: "",
+    demo_video_url: "",
+    screen_type: "pc" as "mobile" | "pc"
   });
 
   const [isAddingArticle, setIsAddingArticle] = useState(false);
@@ -158,6 +184,43 @@ const Admin = () => {
     }
   };
 
+  const handleVideoUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    
+    const formData = new FormData();
+    formData.append('video', file);
+    
+    try {
+        // Show loading toast
+        toast({
+            title: "Uploading",
+            description: "Uploading demo video...",
+        });
+        
+        const response = await fetch(import.meta.env.VITE_API_URL + '/api/upload', {
+            method: 'POST',
+            body: formData
+        });
+        
+        if (!response.ok) throw new Error('Upload failed');
+        
+        const data = await response.json();
+        setNewProject(prev => ({ ...prev, demo_video_url: data.url }));
+        
+        toast({
+            title: "Success",
+            description: "Demo video uploaded successfully",
+        });
+    } catch (error) {
+        toast({
+            title: "Error",
+            description: "Failed to upload demo video",
+            variant: "destructive",
+        });
+    }
+  };
+
   const handleMove = async (id: string, direction: "up" | "down") => {
     try {
       await updateOrder(id, direction);
@@ -215,7 +278,9 @@ const Admin = () => {
         status: "shown",
         features: newProject.features.split('\n').filter(f => f.trim()),
         techStack: techStackObj,
-        image_url: newProject.image || "/placeholder.svg"
+        image_url: newProject.image || "/placeholder.svg",
+        demo_video_url: newProject.demo_video_url || "",
+        screen_type: newProject.screen_type
       };
 
       await createProject(projectToAdd);
@@ -230,7 +295,9 @@ const Admin = () => {
         description: "",
         features: "",
         techStack: "",
-        image: ""
+        image: "",
+        demo_video_url: "",
+        screen_type: "pc"
       });
       
       toast({
@@ -604,6 +671,60 @@ const Admin = () => {
                     </span>
                   )}
                 </div>
+              </div>
+              
+              {/* New demo video upload field */}
+              <div className="space-y-2">
+                <label className="text-sm font-medium">Demo Video</label>
+                <div className="flex items-center gap-4">
+                  <Button
+                    onClick={() => document.getElementById('videoUpload')?.click()}
+                    className="bg-primary/20 hover:bg-primary/30 text-primary"
+                  >
+                    <Upload className="w-5 h-5 mr-2" />
+                    Upload Demo Video
+                  </Button>
+                  <input
+                    type="file"
+                    id="videoUpload"
+                    accept="video/*"
+                    onChange={handleVideoUpload}
+                    className="hidden"
+                  />
+                  {newProject.demo_video_url && (
+                    <span className="text-white/60">
+                      Video selected: {newProject.demo_video_url.split('/').pop()}
+                    </span>
+                  )}
+                </div>
+              </div>
+              
+              {/* Screen type selector */}
+              <div className="space-y-2">
+                <label className="text-sm font-medium">Screen Type</label>
+                <RadioGroup 
+                  value={newProject.screen_type} 
+                  onValueChange={(value) => setNewProject(prev => ({
+                    ...prev, 
+                    screen_type: value as "mobile" | "pc"
+                  }))}
+                  className="flex space-x-8 mt-2"
+                >
+                  <div className="flex items-center space-x-2">
+                    <RadioGroupItem value="pc" id="pc" />
+                    <Label htmlFor="pc" className="flex items-center gap-2 cursor-pointer">
+                      <Monitor className="w-5 h-5" />
+                      <span>PC</span>
+                    </Label>
+                  </div>
+                  <div className="flex items-center space-x-2">
+                    <RadioGroupItem value="mobile" id="mobile" />
+                    <Label htmlFor="mobile" className="flex items-center gap-2 cursor-pointer">
+                      <Smartphone className="w-5 h-5" />
+                      <span>Mobile</span>
+                    </Label>
+                  </div>
+                </RadioGroup>
               </div>
             </div>
             <DialogFooter>
