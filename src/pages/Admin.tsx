@@ -51,20 +51,7 @@ import {
 } from "@/api/articles";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
-
-interface Project {
-  id: string;
-  title: string;
-  description: string;
-  status: "shown" | "hidden";
-  image_url: string;
-  features: string[];
-  techStack: Record<string, string[]>;
-  demo_video_url?: string;
-  screen_type?: "mobile" | "pc";
-  created_at: string;
-  updated_at: string;
-}
+import { Project } from "../api/projects";
 
 interface Article {
   id: string;
@@ -278,7 +265,7 @@ const Admin = () => {
       const projectToAdd = {
         title: newProject.title,
         description: newProject.description,
-        status: "shown",
+        status: "shown" as "shown" | "hidden",
         features: newProject.features.split('\n').filter(f => f.trim()),
         techStack: techStackObj,
         image_url: newProject.image || "/placeholder.svg",

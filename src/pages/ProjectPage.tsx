@@ -1,4 +1,3 @@
-
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { useState, useEffect } from 'react';
@@ -8,7 +7,7 @@ import { ChevronLeft, ChevronRight } from "lucide-react";
 import { toast } from "sonner";
 import { fetchProjectById } from "../api/projects";
 import LoadingSpinner from "@/components/LoadingSpinner";
-import { Project } from "../api/projects";
+import { Project } from "../api/projects"; // Import from api/projects instead of types/project.d.ts
 
 const ProjectPage = () => {
   const { id } = useParams();
@@ -141,7 +140,7 @@ const ProjectPage = () => {
                   initial={{ opacity: 0, scale: 0.95 }}
                   animate={{ opacity: 1, scale: 1 }}
                   transition={{ delay: 0.4, duration: 0.5 }}
-                  className="my-20 flex justify-center"
+                  className="my-24 flex justify-center"
                 >
                   <div className={`relative ${
                     project.screen_type === 'mobile' 
