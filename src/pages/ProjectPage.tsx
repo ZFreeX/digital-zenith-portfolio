@@ -1,3 +1,4 @@
+
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { useState, useEffect } from 'react';
@@ -210,13 +211,9 @@ const ProjectPage = () => {
                           muted 
                           playsInline
                           className={`w-full ${project.screen_type === 'mobile' ? 'h-[540px]' : 'aspect-video'} object-cover`}
-                          onError={(e) => {
-                              console.error('Video loading error:', e);
-                              toast({
-                                  title: "Error",
-                                  description: "Failed to load demo video",
-                                  variant: "destructive",
-                              });
+                          onError={() => {
+                              console.error('Video loading error');
+                              toast("Failed to load demo video");
                           }}
                         ></video>
                         
