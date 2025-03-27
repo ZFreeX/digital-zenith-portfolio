@@ -1,3 +1,4 @@
+
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { useState, useEffect } from 'react';
@@ -6,7 +7,8 @@ import { Button } from "@/components/ui/button";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { toast } from "sonner";
 import { fetchProjectById } from "../api/projects";
-//import type { Project } from "../types/project";
+import LoadingSpinner from "@/components/LoadingSpinner";
+import { Project } from "../api/projects";
 
 const ProjectPage = () => {
   const { id } = useParams();
@@ -34,8 +36,28 @@ const ProjectPage = () => {
     loadProject();
   }, [id, navigate]);
 
-  if (loading || !project) {
-    return <div>Loading...</div>;
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-dark text-white">
+        <Navbar />
+        <div className="pt-24 pb-32">
+          <LoadingSpinner />
+        </div>
+      </div>
+    );
+  }
+
+  if (!project) {
+    return (
+      <div className="min-h-screen bg-dark text-white">
+        <Navbar />
+        <div className="pt-24 pb-32 text-center">
+          <h1 className="text-3xl font-bold text-primary">Project not found</h1>
+          <p className="mt-4 text-white/70">The project you're looking for doesn't exist or has been removed.</p>
+          <Button className="mt-8" onClick={() => navigate('/')}>Go back home</Button>
+        </div>
+      </div>
+    );
   }
 
   const handlePrevProject = () => {
@@ -119,7 +141,7 @@ const ProjectPage = () => {
                   initial={{ opacity: 0, scale: 0.95 }}
                   animate={{ opacity: 1, scale: 1 }}
                   transition={{ delay: 0.4, duration: 0.5 }}
-                  className="my-12 flex justify-center"
+                  className="my-20 flex justify-center"
                 >
                   <div className={`relative ${
                     project.screen_type === 'mobile' 
