@@ -71,11 +71,30 @@ export default {
             transform: "translateY(0)",
           },
         },
+        "fire-glow": {
+          "0%": {
+            opacity: "0.7",
+            transform: "scale(1.05)",
+            filter: "blur(15px)",
+          },
+          "50%": {
+            opacity: "0.9",
+            transform: "scale(1.1)",
+            filter: "blur(20px)",
+          },
+          "100%": {
+            opacity: "0.7",
+            transform: "scale(1.05)",
+            filter: "blur(15px)",
+          },
+        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
         "fade-up": "fade-up 0.5s ease-out forwards",
+        'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+        "fire-glow": "fire-glow 3s ease-in-out infinite",
       },
     },
   },

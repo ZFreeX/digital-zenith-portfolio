@@ -158,7 +158,7 @@ const Admin = () => {
     if (!file) return;
     
     const formData = new FormData();
-    formData.append('image', file);
+    formData.append('file', file);
     
     try {
         const response = await fetch(import.meta.env.VITE_API_URL + '/api/upload', {
@@ -166,7 +166,10 @@ const Admin = () => {
             body: formData
         });
         
-        if (!response.ok) throw new Error('Upload failed');
+        if (!response.ok) {
+            const errorText = await response.text();
+            throw new Error(`Upload failed: ${errorText}`);
+        }
         
         const data = await response.json();
         setNewProject(prev => ({ ...prev, image: data.url }));
@@ -176,9 +179,10 @@ const Admin = () => {
             description: "Image uploaded successfully",
         });
     } catch (error) {
+        console.error('Upload error:', error);
         toast({
             title: "Error",
-            description: "Failed to upload image",
+            description: error instanceof Error ? error.message : "Failed to upload image",
             variant: "destructive",
         });
     }
@@ -189,16 +193,15 @@ const Admin = () => {
     if (!file) return;
     
     const formData = new FormData();
-    formData.append('video', file);
+    formData.append('file', file);
     
     try {
-        // Show loading toast
         toast({
             title: "Uploading",
             description: "Uploading demo video...",
         });
         
-        const response = await fetch(import.meta.env.VITE_API_URL + '/api/upload', {
+        const response = await fetch(`${import.meta.env.VITE_API_URL}/api/upload`, {
             method: 'POST',
             body: formData
         });
@@ -336,29 +339,33 @@ const Admin = () => {
     if (!file) return;
     
     const formData = new FormData();
-    formData.append('image', file);
+    formData.append('file', file);
     
     try {
-      const response = await fetch(import.meta.env.VITE_API_URL + '/api/upload', {
-        method: 'POST',
-        body: formData
-      });
-      
-      if (!response.ok) throw new Error('Upload failed');
-      
-      const data = await response.json();
-      setNewArticle(prev => ({ ...prev, image: data.url }));
-      
-      toast({
-        title: "Success",
-        description: "Image uploaded successfully",
-      });
+        const response = await fetch(import.meta.env.VITE_API_URL + '/api/upload', {
+            method: 'POST',
+            body: formData
+        });
+        
+        if (!response.ok) {
+            const errorText = await response.text();
+            throw new Error(`Upload failed: ${errorText}`);
+        }
+        
+        const data = await response.json();
+        setNewArticle(prev => ({ ...prev, image: data.url }));
+        
+        toast({
+            title: "Success",
+            description: "Image uploaded successfully",
+        });
     } catch (error) {
-      toast({
-        title: "Error",
-        description: "Failed to upload image",
-        variant: "destructive",
-      });
+        console.error('Upload error:', error);
+        toast({
+            title: "Error",
+            description: error instanceof Error ? error.message : "Failed to upload image",
+            variant: "destructive",
+        });
     }
   };
 

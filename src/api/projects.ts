@@ -9,6 +9,8 @@ export interface Project {
     tags: string[];
     techStack: Record<string, string[]>;
     features: string[];
+    demo_video_url?: string | null;    // Add video URL field
+    screen_type?: "mobile" | "pc";     // Add screen type field
     next?: string; // Optional, as it may not always be present
     prev?: string; // Optional, as it may not always be present
     created_at: string; // Use string for date representation
@@ -30,11 +32,15 @@ export async function fetchProjects() {
     return response.json();
 }
 
-export async function createProject(project: any) {
+export async function createProject(project: Partial<Project>) {
     const response = await fetch(API_URL, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(project)
+        body: JSON.stringify({
+            ...project,
+            demo_video_url: project.demo_video_url || null,
+            screen_type: project.screen_type || null
+        })
     });
     if (!response.ok) throw new Error('Failed to create project');
     return response.json();
@@ -80,6 +86,25 @@ export async function fetchPublicProjects() {
 export async function fetchProjectById(id: string) {
     const response = await fetch(`${API_URL}/${id}`);
     if (!response.ok) throw new Error('Failed to fetch project');
+    return response.json();
+}
+
+// Add a new function for file uploads (can be used for both images and videos)
+export async function uploadFile(file: File) {
+    const formData = new FormData();
+    formData.append('file', file);
+
+    const response = await fetch(`${import.meta.env.VITE_API_URL}/api/upload`, {
+        method: 'POST',
+        body: formData,
+    });
+
+    if (!response.ok) {
+        const errorText = await response.text();
+        console.error("Upload error response:", errorText);
+        throw new Error('Failed to upload file');
+    }
+
     return response.json();
 }
 
