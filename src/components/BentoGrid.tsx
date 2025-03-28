@@ -9,7 +9,7 @@ import { Badge } from "@/components/ui/badge";
 const BentoGrid = () => {
   const [currentImage, setCurrentImage] = useState(0);
   const [email, setEmail] = useState(""); // State for email input
-  const images = ["/placeholder.svg", "/placeholder.svg", "/placeholder.svg"];
+  const images = ["/lovable-uploads/1.png", "/lovable-uploads/3.jpg", "/lovable-uploads/2.jpg"];
 
   const nextImage = () => {
     setCurrentImage((prev) => (prev + 1) % images.length);
@@ -89,7 +89,7 @@ const BentoGrid = () => {
           >
             <h3 className="text-xl font-semibold mb-4 text-white">Tech Stack</h3>
             <div className="flex flex-wrap gap-2">
-              {["Python", "Flask", "Next.js", "TypeScript", "PostgreSQL", "Tact"].map((tech) => (
+              {["Go", "C++", "Python", "Flask/FastAPI", "React", "Vite", "Next.js", "JavaScript/TypeScript", "PostgreSQL", "Tact"].map((tech) => (
                 <span
                   key={tech}
                   className="px-3 py-1 bg-primary/10 text-primary rounded-full text-sm"

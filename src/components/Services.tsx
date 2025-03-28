@@ -2,14 +2,15 @@ import { Card, CardContent } from "@/components/ui/card";
 import { motion } from "framer-motion";
 
 const services = [
-  { title: "Telegram Bots", description: "Custom bot development for business automation" },
+  { title: "AI automations & chatbots", description: "AI-powered or any other automated workflow" },
+  { title: "GPT Agents", description: "Custom AI agents for specific tasks. Introducing LLM." },
+  { title: "Telegram Infrastructure Development", description: "Telegram bots/mini-apps/dApps - everything!" },
   { title: "Web Development", description: "Modern web applications & sites" },
   { title: "Web Scraping", description: "Efficient data extraction solutions" },
-  { title: "Automation Scripts", description: "Task automation for increased productivity" },
+  { title: "Automation Scripts", description: "General task automation" },
   { title: "Browser Automation", description: "Streamlined browser task execution" },
   { title: "Video Editing Automation", description: "Automated video processing workflows" },
   { title: "Pinterest Marketing", description: "Automated Pinterest growth strategies" },
-  { title: "GPT Agents", description: "Custom AI agents for specific tasks" },
   { title: "CP Solutions", description: "Competitive programming problem solving" },
   { title: "TON Smart Contracts", description: "Blockchain development on TON" },
 ];

@@ -21,7 +21,7 @@ const About = () => {
               >
                 <div className="rounded-2xl overflow-hidden">
                   <img
-                    src="/placeholder.svg"
+                    src="/lovable-uploads/ava.jpg"
                     alt="Konstantin Filipovich"
                     className="w-full aspect-square object-cover"
                   />
@@ -38,7 +38,7 @@ const About = () => {
                   About Me
                 </h1>
                 <p className="text-lg text-white/70 leading-relaxed">
-                  Hi, I'm Konstantin Filipovich, a passionate developer and AI enthusiast. I specialize in creating innovative solutions that bridge the gap between artificial intelligence and business needs.
+                Insomnia due to generating the innovative solutions for your business. I focus on the hottest groundbreaking areas of development: machine learning and AI, blockchain and full-stack web. "Style" and "functionality" are two my favourite words and, basically, my requirements to projects I build. I love creative solutions and cutting-edge technologies. Contact me and we will turn your idea into a digital masterpiece together.
                 </p>
                 <p className="text-lg text-white/70 leading-relaxed">
                   With years of experience in software development and AI integration, I've helped numerous businesses streamline their operations and enhance their customer experience through intelligent automation.
